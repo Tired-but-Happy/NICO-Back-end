@@ -31,6 +31,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserInfo(String userAddress) {
+        return null;
+    }
+
+    @Override
     public void updateUserInfo(String userAddress) {
 
     }

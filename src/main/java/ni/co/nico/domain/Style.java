@@ -17,5 +17,7 @@ public class Style extends BaseTime{
     private Long id;
     @Column
     private String styleName;
+    @Column
+    private String ownerAddress;
 
 }

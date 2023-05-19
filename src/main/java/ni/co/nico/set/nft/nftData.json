@@ -1,0 +1,43 @@
+[
+  { "id": 0, "contract_name": "x.paras.near", "category": "nft" },
+  { "id": 1, "contract_name": "marketplace.paras.near", "category": "nft" },
+  { "id": 2, "contract_name": "token.paras.near", "category": "nft" },
+  { "id": 3, "contract_name": "staking.paras.near", "category": "nft" },
+  { "id": 4, "contract_name": "market.fewandfar.near", "category": "nft" },
+  {
+    "id": 5,
+    "contract_name": "pack.promotional.nfl.playible.near",
+    "category": "nft"
+  },
+  {
+    "id": 6,
+    "contract_name": "pack.promotional.basketball.playible.near",
+    "category": "nft"
+  },
+  { "id": 7, "contract_name": "spin-nft-contract.near", "category": "nft" },
+  { "id": 8, "contract_name": "dragonnation.near", "category": "nft" },
+  {
+    "id": 9,
+    "contract_name": "simple.market.mintbase1.near",
+    "category": "nft"
+  },
+  { "id": 10, "contract_name": "mintbase1.near", "category": "nft" },
+  { "id": 11, "contract_name": "market.tradeport.near", "category": "nft" },
+  { "id": 12, "contract_name": "serumnft.near", "category": "nft" },
+  { "id": 13, "contract_name": "nearnautsnft.near", "category": "nft" },
+  { "id": 14, "contract_name": "nft.alienbearcrew.near", "category": "nft" },
+  { "id": 15, "contract_name": "nft.uniqart.near", "category": "nft" },
+  {
+    "id": 16,
+    "contract_name": "game.basketball.playible.near",
+    "category": "nft"
+  },
+  { "id": 17, "contract_name": "game.fnl.playible.near", "category": "nft" },
+  {
+    "id": 18,
+    "contract_name": "laboratory.secretskelliessociety.near",
+    "category": "nft"
+  },
+  { "id": 19, "contract_name": "nativo-minter.near", "category": "nft" },
+  { "id": 20, "contract_name": "proxy2.minista.near", "category": "nft" }
+]

@@ -1,0 +1,42 @@
+[
+  { "id": 0, "contract_name": "wrap.near", "category": "defi" },
+  { "id": 1, "contract_name": "v2.ref-finance.near", "category": "defi" },
+  { "id": 2, "contract_name": "ref-finance.near", "category": "defi" },
+  { "id": 3, "contract_name": "token.v2.ref-finance.near", "category": "defi" },
+  { "id": 4, "contract_name": "xtoken.ref-finance.near", "category": "defi" },
+  { "id": 5, "contract_name": "skyward.near", "category": "defi" },
+  { "id": 6, "contract_name": "token.skyward.near", "category": "defi" },
+  { "id": 7, "contract_name": "v2.ref-farming.near", "category": "defi" },
+  { "id": 8, "contract_name": "meta-pool.near", "category": "defi" },
+  { "id": 9, "contract_name": "v1.jumbo_exchange.near", "category": "defi" },
+  { "id": 10, "contract_name": "spot.spin-fi.near", "category": "defi" },
+  { "id": 11, "contract_name": "usn", "category": "defi" },
+  { "id": 12, "contract_name": "token.cheddar.near", "category": "defi" },
+  {
+    "id": 13,
+    "contract_name": "asset-manager.orderly-network.near",
+    "category": "defi"
+  },
+  { "id": 14, "contract_name": "xtoken.ref-finance.near", "category": "defi" },
+  { "id": 15, "contract_name": "boostfarm.ref-labs.near", "category": "defi" },
+  {
+    "id": 16,
+    "contract_name": "contract.main.burrow.near",
+    "category": "defi"
+  },
+  { "id": 17, "contract_name": "v2_0_2.perp.spin-fi.near", "category": "defi" },
+  { "id": 18, "contract_name": "priceoracle.near", "category": "defi" },
+  { "id": 19, "contract_name": "v1.pembrock.near", "category": "defi" },
+  {
+    "id": 20,
+    "contract_name": "nftstaking.jumpfinance.near",
+    "category": "defi"
+  },
+  { "id": 21, "contract_name": "factory.bridge.near", "category": "defi" },
+  {
+    "id": 22,
+    "contract_name": "launchpad.jumpfinance.near",
+    "category": "defi"
+  },
+  { "id": 23, "contract_name": "v1.tonic-perps.near", "category": "defi" }
+]

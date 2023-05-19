@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface UsedAppRepository extends JpaRepository<UsedApp, Long>, UsedAppRepositoryCustom{
     List<UsedApp> findByUserAddress(String userAddress);
+
+    UsedApp findByBlockHash(String blockHash);
+    UsedApp findByUserAddressAndBlockHash(String userAddress,String blockHash);
 }

@@ -17,8 +17,8 @@ public class User extends BaseTime{
     private Long id;
     @Column
     private String address;
-    @Column(columnDefinition = "varchar(255) default 'nearbear.near'")
-    private String nickName;
+    @Column(columnDefinition = "varchar(255)")
+    private String nickName = "nearbear.near";
     @Column
     private String profileImage;
     @Column

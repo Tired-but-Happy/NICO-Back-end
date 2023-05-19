@@ -40,8 +40,8 @@ public class UsedAppServiceImpl implements UsedAppService {
         Nft nft = new Nft();
         NftUtil.addContractNamesFromJson(nft, "src/main/java/ni/co/nico/set/nft/nftData.json");
         Set<String> nftSet = nft.getContractNames();
-        LOGGER.info("[토큰에서 정보빼오기] 로그인유저 이름 :{}",defiSet);
-        LOGGER.info("[토큰에서 정보빼오기] 로그인유저 이름 :{}",nftSet);
+        LOGGER.info("[토큰에서 정보빼오기] 로그인유저 이름 :{}", defiSet);
+        LOGGER.info("[토큰에서 정보빼오기] 로그인유저 이름 :{}", nftSet);
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -52,13 +52,15 @@ public class UsedAppServiceImpl implements UsedAppService {
                     if (firstActionTypeNode != null && firstActionTypeNode.asText().equals("functionCall")) {
                         JsonNode signerNode = txnNode.get("signer");
                         JsonNode receiverNode = txnNode.get("receiver");
-
+                        JsonNode blockHashNode = txnNode.get("block_hash");
                         if (signerNode != null && receiverNode != null) {
                             String signer = signerNode.asText();
                             String receiver = receiverNode.asText();
+                            String blockHash = blockHashNode.asText();
 
                             UsedApp usedApp = new UsedApp();
                             usedApp.setUserAddress(userAddress);
+                            usedApp.setBlockHash(blockHash);
 
                             if (!signer.equals(userAddress)) {
                                 usedApp.setAppName(signer);
@@ -75,7 +77,14 @@ public class UsedAppServiceImpl implements UsedAppService {
                                 usedApp.setAppCategory("others");
                             }
 
-                            usedAppRepository.save(usedApp);
+                            UsedApp existingUsedApp = usedAppRepository.findByUserAddressAndBlockHash(userAddress, blockHash);
+                            if (existingUsedApp == null) {
+                                // "block_hash" 값이 데이터베이스에 존재하지 않는 경우에 대한 추가 로직을 여기에 작성합니다.
+                                // 예: 로그 출력, 이메일 알림 등
+                                LOGGER.info("Block hash does not exist in the database: {}", usedApp.getBlockHash());
+
+                                usedAppRepository.save(usedApp);
+                            }
                         }
                     }
                 }

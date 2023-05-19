@@ -31,20 +31,20 @@ public class LikeServiceImpl implements LikeService {
             String result = "";
             Board board = boardOptional.get();
             //주어진 board와 userAddress로 like를 찾는다.
-            Optional<Like> likeOptional = likeRepository.findByBoardIdAndUserAddress(boardId, userAddress);
+            Optional<LikeBoard> likeOptional = likeRepository.findByBoardIdAndUserAddress(boardId, userAddress);
             if (likeOptional.isPresent()) {
                 // 좋아요 기록이 이미 있는 경우
-                Like like = likeOptional.get();
+                LikeBoard likeBoard = likeOptional.get();
                 board.setLikeCount(board.getLikeCount() - 1);
-                likeRepository.delete(like);
+                likeRepository.delete(likeBoard);
                 result="off";
             } else {
                 // 좋아요 기록이 없는 경우
                 board.setLikeCount(board.getLikeCount() + 1);
-                Like like = new Like();
-                like.setBoardId(boardId);
-                like.setUserAddress(userAddress);
-                likeRepository.save(like);
+                LikeBoard likeBoard = new LikeBoard();
+                likeBoard.setBoardId(boardId);
+                likeBoard.setUserAddress(userAddress);
+                likeRepository.save(likeBoard);
                 result= "on";
 
                 if (board.getLikeCount() == 10 && !board.isWriterScoreReceived()) {

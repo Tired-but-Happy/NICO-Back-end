@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
-public class Like extends BaseTime{
+public class LikeBoard extends BaseTime{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

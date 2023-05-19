@@ -1,8 +1,10 @@
 package ni.co.nico.dto.mypage;
 
+import lombok.Getter;
 import lombok.Setter;
 
 @Setter
+@Getter
 public class MypageResDTO {
     String userAddress;
     String nickname;

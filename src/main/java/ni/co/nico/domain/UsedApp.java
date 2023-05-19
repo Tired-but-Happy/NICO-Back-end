@@ -18,5 +18,6 @@ public class UsedApp {
     private String userAddress;
     private String appName;
     private String appCategory;
+    private String blockHash;
 
 }

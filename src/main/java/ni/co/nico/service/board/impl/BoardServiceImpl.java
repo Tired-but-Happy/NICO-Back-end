@@ -10,7 +10,7 @@ import ni.co.nico.service.board.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import ni.co.nico.domain.Leveling;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +38,19 @@ public class BoardServiceImpl implements BoardService {
             board.setContent(content);
 
             boardRepository.save(board);
+            //글을 쓰면 10점을 부여.
+            user.setScore(user.getScore() + 10);
+            userRepository.save(user);
+
+
+            Leveling leveling = new Leveling();
+            int levelBefore = user.getLevel();
+            int levelAfter = leveling.calculateLevel(user.getScore());
+
+            // If the level has changed, update the user's level and other related information
+            if (levelAfter > levelBefore) {
+                user.setLevel(levelAfter);
+            }
         } else {
             throw new IllegalArgumentException("사용자가 존재하지 않습니다.");
             // 예외 처리 또는 적절한 로직 추가

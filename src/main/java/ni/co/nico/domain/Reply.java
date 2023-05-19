@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,4 +26,10 @@ public class Reply extends BaseTime{
     private String writerAddress;
     @Column
     private String writerNickName;
+    @Column(columnDefinition = "integer default 0")
+    private int likeCount;
+
+    public LocalDateTime getCreatedTime() {
+        return super.getCreatedAt();
+    }
 }

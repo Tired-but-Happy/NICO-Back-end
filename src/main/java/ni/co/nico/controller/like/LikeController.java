@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/like")
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class LikeController {
 
     private final LikeService likeService;

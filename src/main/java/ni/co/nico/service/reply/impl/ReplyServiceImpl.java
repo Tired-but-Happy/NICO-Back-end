@@ -35,5 +35,8 @@ public class ReplyServiceImpl implements ReplyService{
         reply.setWriterNickName(user.getNickName());
 
         replyRepository.save(reply);
+        //유저가 댓글을 쓰면 5점 부여
+        user.setScore(user.getScore() + 5);
+        userRepository.save(user);
     }
 }

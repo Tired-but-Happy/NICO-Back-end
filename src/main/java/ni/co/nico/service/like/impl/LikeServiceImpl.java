@@ -1,10 +1,11 @@
 package ni.co.nico.service.like.impl;
 
 import lombok.RequiredArgsConstructor;
-import ni.co.nico.domain.Board;
-import ni.co.nico.domain.Like;
+import ni.co.nico.domain.*;
 import ni.co.nico.repository.board.BoardRepository;
 import ni.co.nico.repository.like.LikeRepository;
+import ni.co.nico.repository.reply.ReplyRepository;
+import ni.co.nico.repository.user.UserRepository;
 import ni.co.nico.service.like.LikeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,8 @@ public class LikeServiceImpl implements LikeService {
     private final BoardRepository boardRepository;
     private final LikeRepository likeRepository;
 
+    private final ReplyRepository replyRepository;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -43,6 +46,17 @@ public class LikeServiceImpl implements LikeService {
                 like.setUserAddress(userAddress);
                 likeRepository.save(like);
                 result= "on";
+
+                if (board.getLikeCount() == 10 && !board.isWriterScoreReceived()) {
+                    Optional<User> writerOptional = userRepository.findByAddress(board.getWriterAddress());
+                    if (writerOptional.isPresent()) {
+                        User writer = writerOptional.get();
+                        writer.setScore(writer.getScore() + 500);
+                        board.setWriterScoreReceived(true);
+                        userRepository.save(writer);
+                    }
+                }
+
             }
             boardRepository.save(board);
             return result;
@@ -50,4 +64,5 @@ public class LikeServiceImpl implements LikeService {
             throw new IllegalArgumentException("게시물을 찾을 수 없습니다.");
         }
     }
+
 }

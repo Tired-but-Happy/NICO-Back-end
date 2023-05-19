@@ -1,2 +1,4 @@
-package ni.co.nico.repository.transaction;public interface UserRepositoryCustom {
+package ni.co.nico.repository.transaction;
+
+public interface UsedAppRepositoryCustom {
 }

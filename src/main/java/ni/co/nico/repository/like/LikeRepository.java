@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, Long>, LikeRepositoryCustom{
     Optional<Like> findByBoardIdAndUserAddress(Long boardId, String userAddress);
+
+    int countByBoardId(Long id);
 }

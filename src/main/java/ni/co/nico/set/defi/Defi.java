@@ -1,4 +1,4 @@
-package ni.co.nico.set;
+package ni.co.nico.set.defi;
 
 import java.util.HashSet;
 import java.util.Set;

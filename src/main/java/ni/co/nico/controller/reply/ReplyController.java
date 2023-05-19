@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/reply")
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class ReplyController {
 
     private final ReplyService replyService;

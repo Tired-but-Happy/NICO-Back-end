@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class UserController {
     private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
@@ -35,10 +36,12 @@ public class UserController {
     //사용자가 지갑연동으로 로그인을 한다.
     @PostMapping(value = "/login")
     public ResponseEntity<String> login(@RequestBody UserLoginReqDTO userLoginReqDTO){
-        LOGGER.info("[토큰에서 정보빼오기] 로그인유저 이름 :{}",userLoginReqDTO.getUserAddress());
+        
         String address=userLoginReqDTO.getUserAddress();
-
+        
+        //db에 저장
         userService.login(address);
+        
         String token = generateToken(userLoginReqDTO.getUserAddress());
         return ResponseEntity.ok().body(token);
     }

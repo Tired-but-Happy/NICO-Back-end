@@ -1,7 +1,8 @@
-package ni.co.nico.set;
+package ni.co.nico.set.defi;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ni.co.nico.set.ContractDTO;
 
 import java.io.File;
 import java.io.IOException;

@@ -2,12 +2,15 @@ package ni.co.nico.service.user.impl;
 
 import lombok.RequiredArgsConstructor;
 import ni.co.nico.domain.User;
+import ni.co.nico.dto.user.UserUpdateReqDTO;
 import ni.co.nico.repository.user.UserRepository;
 import ni.co.nico.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -36,7 +39,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserInfo(String userAddress) {
+    public void updateUserInfo(String userAddress, UserUpdateReqDTO updateReqDTO) {
+        Optional<User> optionalUser = userRepository.findByAddress(userAddress);
 
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setNickName(updateReqDTO.getNickName());
+            user.setIntroduction(updateReqDTO.getIntroduction());
+            user.setStyle(updateReqDTO.getStyle());
+
+            userRepository.save(user);
+        } else {
+            // 사용자를 찾을 수 없을 때의 예외 처리 로직 추가
+        }
     }
 }

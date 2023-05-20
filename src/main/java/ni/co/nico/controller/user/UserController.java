@@ -1,9 +1,9 @@
 package ni.co.nico.controller.user;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import ni.co.nico.dto.user.UserLoginReqDTO;
+import ni.co.nico.service.style.StyleService;
 import ni.co.nico.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,11 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
     private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
+    private final StyleService styleService;
 
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, StyleService styleService) {
         this.userService = userService;
+        this.styleService = styleService;
     }
 
     @GetMapping(value = "/getget")
@@ -41,7 +43,7 @@ public class UserController {
         
         //db에 저장
         userService.login(address);
-        
+        styleService.getNewbieStyle(address);
         String token = generateToken(userLoginReqDTO.getUserAddress());
         return ResponseEntity.ok().body(token);
     }

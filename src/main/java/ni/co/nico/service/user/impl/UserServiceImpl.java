@@ -19,6 +19,7 @@ public class UserServiceImpl implements UserService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
+
     @Override
     public void login(String address) {
         LOGGER.info("login함수 실행 됨");
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
                     newUser.setAddress(address);
                     // Perform any other necessary initialization for the new user
                     userRepository.save(newUser);
+                    newUser.setStyle("Newbie");
                     return newUser; // 수정: User 객체를 반환하도록 수정
                 });
 

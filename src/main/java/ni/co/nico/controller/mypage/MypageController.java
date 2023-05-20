@@ -44,39 +44,24 @@ public class MypageController {
     @GetMapping("/{userAddress}")
     public ResponseEntity<Object> getMyPageInfo(@PathVariable String userAddress) {
         // NEAR api 를 통해 사용자가 요청한 dapp의 정보를 db에 저장합니다.
-        try {
-            String url = "https://api.pikespeak.ai/account/transactions/" + userAddress;
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("accept", "application/json");
-            headers.set("x-api-key", "20e2fecb-7f5d-4a7d-ad60-6751196ec5ce");
-
-            HttpEntity<String> entity = new HttpEntity<>(headers);
-
-            RestTemplate restTemplate = new RestTemplateBuilder()
-                    .setConnectTimeout(Duration.ofSeconds(20))
-                    .setReadTimeout(Duration.ofSeconds(20))
-                    .build();
-
-            ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-            String json = responseEntity.getBody();
-            usedAppService.processTransactionData(json, userAddress);
-
-        } catch (Exception e) {
-            MypageResDTO mypageResDTO = myPageService.getMyPageInfo(userAddress);
-            // 게시물 목록을 가져옵니다.
-            List<MyboardResDTO> myBoardList = myPageService.getMyBoardList(userAddress);
-            // 댓글 목록을 가져옵니다.
-            List<MyreplyResDTO> myReplyList = myPageService.getMyReplyList(userAddress);
-
-            // 응답에 필요한 정보를 직접 생성하고 설정합니다.
-            Map<String, Object> response = new HashMap<>();
-            response.put("mypageInfo", mypageResDTO);
-            response.put("boardList", myBoardList);
-            response.put("replyList", myReplyList);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
+//        try {
+//            String url = "https://api.pikespeak.ai/account/transactions/" + userAddress;
+//
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.set("accept", "application/json");
+//            headers.set("x-api-key", "20e2fecb-7f5d-4a7d-ad60-6751196ec5ce");
+//
+//            HttpEntity<String> entity = new HttpEntity<>(headers);
+//
+//            ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+//            String json = responseEntity.getBody();
+//            usedAppService.processTransactionData(json, userAddress);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            // 예외 처리 로직 추가 및 적절한 오류 응답 반환
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
 
         // 사용자 정보를 가져옵니다.
         MypageResDTO mypageResDTO = myPageService.getMyPageInfo(userAddress);
@@ -97,6 +82,29 @@ public class MypageController {
         // JSON 형태로 응답합니다.
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/set/{userAddress}")
+    public void setOftenUsedAppDBFirst(@PathVariable String userAddress) {
+        // NEAR api 를 통해 사용자가 요청한 dapp의 정보를 db에 저장합니다.
+        try {
+            String url = "https://api.pikespeak.ai/account/transactions/" + userAddress;
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("accept", "application/json");
+            headers.set("x-api-key", "20e2fecb-7f5d-4a7d-ad60-6751196ec5ce");
+
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            String json = responseEntity.getBody();
+            usedAppService.processTransactionData(json, userAddress);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @GetMapping("/near/{userAddress}")
     public ResponseEntity<Void> getUsedAppList(@PathVariable String userAddress) {

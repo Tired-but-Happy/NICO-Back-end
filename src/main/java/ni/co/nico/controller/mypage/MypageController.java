@@ -11,11 +11,13 @@ import ni.co.nico.service.mypage.MypageService;
 import ni.co.nico.service.style.StyleService;
 import ni.co.nico.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,14 +53,29 @@ public class MypageController {
 
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
+            RestTemplate restTemplate = new RestTemplateBuilder()
+                    .setConnectTimeout(Duration.ofSeconds(20))
+                    .setReadTimeout(Duration.ofSeconds(20))
+                    .build();
+
             ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
             String json = responseEntity.getBody();
             usedAppService.processTransactionData(json, userAddress);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            // 예외 처리 로직 추가 및 적절한 오류 응답 반환
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            MypageResDTO mypageResDTO = myPageService.getMyPageInfo(userAddress);
+            // 게시물 목록을 가져옵니다.
+            List<MyboardResDTO> myBoardList = myPageService.getMyBoardList(userAddress);
+            // 댓글 목록을 가져옵니다.
+            List<MyreplyResDTO> myReplyList = myPageService.getMyReplyList(userAddress);
+
+            // 응답에 필요한 정보를 직접 생성하고 설정합니다.
+            Map<String, Object> response = new HashMap<>();
+            response.put("mypageInfo", mypageResDTO);
+            response.put("boardList", myBoardList);
+            response.put("replyList", myReplyList);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         }
 
         // 사용자 정보를 가져옵니다.

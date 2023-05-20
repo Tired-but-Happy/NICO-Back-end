@@ -18,7 +18,7 @@ public class User extends BaseTime{
     @Column
     private String address;
     @Column(columnDefinition = "varchar(255)")
-    private String nickName = "nearbear.near";
+    private String nickName = "Supernico";
     @Column
     private String profileImage;
     @Column

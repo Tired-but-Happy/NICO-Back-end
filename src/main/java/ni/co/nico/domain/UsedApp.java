@@ -19,5 +19,10 @@ public class UsedApp {
     private String appName;
     private String appCategory;
     private String blockHash;
+    private String createdYear;
+    private String createdMonth;
 
+    public String getCreatedDate() {
+        return createdYear + "-" + createdMonth + "-01";
+    }
 }

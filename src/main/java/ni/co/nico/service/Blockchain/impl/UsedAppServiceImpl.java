@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import ni.co.nico.Util.TimestampConverter;
 import ni.co.nico.controller.user.UserController;
 import ni.co.nico.domain.UsedApp;
 import ni.co.nico.dto.mypage.UsedAppDTO;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,7 +51,11 @@ public class UsedAppServiceImpl implements UsedAppService {
             if (rootNode.isArray()) {
                 for (JsonNode txnNode : rootNode) {
                     JsonNode firstActionTypeNode = txnNode.get("first_action_type");
-                    if (firstActionTypeNode != null && firstActionTypeNode.asText().equals("functionCall")) {
+                    JsonNode timestampNode = txnNode.get("transaction_timestamp");
+
+                    if (timestampNode != null && firstActionTypeNode != null && firstActionTypeNode.asText().equals("functionCall")) {
+                        String timestampStr = timestampNode.asText();
+                        List<String> yearMonth = TimestampConverter.convertTimestamp(timestampStr);
                         JsonNode signerNode = txnNode.get("signer");
                         JsonNode receiverNode = txnNode.get("receiver");
                         JsonNode blockHashNode = txnNode.get("block_hash");
@@ -61,6 +67,8 @@ public class UsedAppServiceImpl implements UsedAppService {
                             UsedApp usedApp = new UsedApp();
                             usedApp.setUserAddress(userAddress);
                             usedApp.setBlockHash(blockHash);
+                            usedApp.setCreatedYear(yearMonth.get(0));
+                            usedApp.setCreatedMonth(yearMonth.get(1));
 
                             if (!signer.equals(userAddress)) {
                                 usedApp.setAppName(signer);
@@ -105,19 +113,33 @@ public class UsedAppServiceImpl implements UsedAppService {
         NftUtil.addContractNamesFromJson(nft, "src/main/java/ni/co/nico/set/nft/nftData.json");
         Set<String> nftSet = nft.getContractNames();
 
+
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+        int currentQuarter = (currentDate.getMonthValue() - 1) / 3 + 1;
+        LocalDate quarterStart = LocalDate.of(currentYear, (currentQuarter - 1) * 3 + 1, 1);
+        LocalDate quarterEnd = quarterStart.plusMonths(3).minusDays(1);
+
+
         List<UsedApp> usedApps = usedAppRepository.findByUserAddress(userAddress);
+        List<UsedApp> usedAppsInQuarter = usedApps.stream()
+                .filter(usedApp -> {
+                    LocalDate appDate = LocalDate.parse(usedApp.getCreatedDate()); // Assuming createdDate is the field representing the date
+                    return !appDate.isBefore(quarterStart) && !appDate.isAfter(quarterEnd);
+                })
+                .collect(Collectors.toList());
 
-        // appname을 횟수별로 매핑하는 맵
-        Map<String, Integer> appNameCountMap = new HashMap<>();
+        // 현재 분기 내 개수로 매핑 앱 이름 매핑
+        Map<String, Integer> appNameCountMapInQuarter = new HashMap<>();
 
-        // appname 별로 사용 횟수 계산
-        for (UsedApp usedApp : usedApps) {
+        // 현재 분기 내에서 앱 이름당 사용 횟수 계산
+        for (UsedApp usedApp : usedAppsInQuarter) {
             String appName = usedApp.getAppName();
-            appNameCountMap.put(appName, appNameCountMap.getOrDefault(appName, 0) + 1);
+            appNameCountMapInQuarter.put(appName, appNameCountMapInQuarter.getOrDefault(appName, 0) + 1);
         }
 
-        // 횟수별로 내림차순으로 정렬하여 상위 5개만 추출
-        List<Map.Entry<String, Integer>> sortedEntries = appNameCountMap.entrySet()
+        // 개수별로 내림차순으로 정렬하고 상위 5개만 추출
+        List<Map.Entry<String, Integer>> sortedEntries = appNameCountMapInQuarter.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(5)
@@ -135,6 +157,8 @@ public class UsedAppServiceImpl implements UsedAppService {
             usedAppDTO.setUserAddress(userAddress);
             usedAppDTO.setAppName(appName);
             usedAppDTO.setCount(count);
+            usedAppDTO.setYear(currentYear);
+            usedAppDTO.setQuarter(currentQuarter);
             // appCategory 설정
             if (defiSet.contains(appName)) {
                 usedAppDTO.setAppCategory("defi");

@@ -10,4 +10,6 @@ public class UsedAppDTO {
     private String appName;
     private int count;
     private String appCategory;
+    private int year;
+    private int quarter;
 }

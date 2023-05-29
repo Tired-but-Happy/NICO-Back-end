@@ -113,7 +113,7 @@ public class MypageController {
 
             HttpHeaders headers = new HttpHeaders();
             headers.set("accept", "application/json");
-            headers.set("x-api-key", "20e2fecb-7f5d-4a7d-ad60-6751196ec5ce");
+            headers.set("x-api-key", "a7c78f18-f01c-4ad2-b98f-b0104d764399");
 
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
